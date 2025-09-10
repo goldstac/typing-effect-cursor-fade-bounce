@@ -1,71 +1,84 @@
 # Typing Effect: Cursor Fade & Bounce
 
-A lightweight, dependency-free HTML/CSS/JavaScript typing animation featuring a blinking cursor with fade-in and bounce effects. Designed for easy integration and customization in modern web projects.
+A simple, dependency-free HTML/CSS/JavaScript typing animation featuring a blinking cursor, fade-in, and bounce effects. Easily integrates as a single HTML file.
 
 ## Features
 
-- Realistic typing animation
-- Blinking cursor with fade and bounce transitions
-- No dependencies (vanilla JS, HTML, CSS)
-- Simple integration and reusable code
-- Customizable typing speed, messages, cursor style, and animation
+- Realistic typing animation with blinking cursor
+- Fade-in effect after typing is complete
+- Bouncing emoji at the end
+- No dependencies (pure HTML, CSS, JS)
+- Easy to customize and use
 
 ## Usage
 
-Copy the example below into your HTML file. All code (HTML, CSS, and JavaScript) is contained in a single file using `<style>` and `<script>` tags.
+Copy and use the code below as your HTML file. All styles and scripts are included—no external files required.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Typing Effect: Cursor Fade & Bounce</title>
+  <title>Typing Effect</title>
   <style>
-    .typing-container {
+    body {
+      background: #0a0a0a;
+      color: #f1f1f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
       font-family: monospace;
-      font-size: 1.5rem;
-      white-space: pre;
+      font-size: 2rem;
     }
-    .cursor {
+    .typing {
+      border-right: .15em solid #f1f1f1;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: blink-caret .75s step-end infinite;
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #f1f1f1 }
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .bounce {
       display: inline-block;
-      width: 1ch;
-      animation: blink 1s steps(1) infinite, bounce 1.5s infinite;
-      color: #2196f3;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
+      animation: bounce 1s infinite;
     }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      25% { transform: translateY(-3px); }
-      50% { transform: translateY(0); }
-      75% { transform: translateY(2px); }
+      50% { transform: translateY(-10px); }
     }
   </style>
 </head>
 <body>
-  <div class="typing-container">
-    <span class="typed-text"></span><span class="cursor">|</span>
-  </div>
+  <div class="typing"></div>
   <script>
-    // Typing effect options
-    const text = "Welcome to the typing effect!";
-    const typingSpeed = 100; // milliseconds per character
-
-    const typedTextSpan = document.querySelector('.typed-text');
-    let charIndex = 0;
-
+    const text = "Subscribe";
+    const typingDiv = document.querySelector(".typing");
+    let i = 0;
     function type() {
-      if (charIndex < text.length) {
-        typedTextSpan.textContent += text.charAt(charIndex);
-        charIndex++;
-        setTimeout(type, typingSpeed);
+      if (i < text.length) {
+        typingDiv.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 100);
+      } else {
+        typingDiv.classList.remove("typing");
+        typingDiv.classList.add("fade-in");
+        setTimeout(() => {
+          typingDiv.innerHTML += " <span class='bounce'>🙂</span>";
+        }, 500);
       }
     }
-
-    // Start typing effect on page load
-    window.onload = type;
+    type();
   </script>
 </body>
 </html>
@@ -73,9 +86,10 @@ Copy the example below into your HTML file. All code (HTML, CSS, and JavaScript)
 
 ### Customization
 
-- **Text:** Change the `text` variable in the script section.
-- **Typing Speed:** Adjust the `typingSpeed` value.
-- **Cursor Style:** Modify the CSS for `.cursor` as needed.
+- **Text:** Change the value of the `text` variable in the script.
+- **Typing Speed:** Modify the `setTimeout(type, 100)` value (in milliseconds).
+- **Emoji or End Effect:** Change the emoji inside the JavaScript if desired.
+- **Colors and Styles:** Adjust the CSS in the `<style>` section.
 
 ## License
 
